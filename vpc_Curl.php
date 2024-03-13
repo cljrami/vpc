@@ -2,9 +2,9 @@
 
 
 
-if (!defined("WHMCS")) {
-    die("This file cannot be accessed directly");
-}
+// if (!defined("WHMCS")) {
+//     die("This file cannot be accessed directly");
+// }
 function vpc_ChangePassword_MetaData()
 {
     return array(
@@ -23,7 +23,7 @@ $serverusername = "olson";
 $passwordserver = "123";
 $domain = "192.168.5.125";
 $user = "123";
-$pass = "12345678910";
+$pass = "123456789";
 
 function vpc_ChangePassword($serverusername, $passwordserver, $domain, $user, $pass)
 {
@@ -86,10 +86,10 @@ function vpc_ChangePassword($serverusername, $passwordserver, $domain, $user, $p
 //         if ($params['server'] == 1) {
 //             $postvars = array(
 //                 'username' => $params['serverusername'],
-//                 'passwd' => $params['serverpassword'],
-//                 'domain' => $params['serverhostname'],
-//                 'user' => $params['username'],
-//                 'pass' => $params['password'],
+//                 'passwd' => $params['passwordserver'],
+//                 'domain' => $params['domain'],
+//                 'user' => $params['user'],
+//                 'pass' => $params['pass'],
 //             );
 
 //             $postdata = http_build_query($postvars);

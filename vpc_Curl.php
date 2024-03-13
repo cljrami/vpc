@@ -2,9 +2,9 @@
 
 
 
-// if (!defined("WHMCS")) {
-//     die("This file cannot be accessed directly");
-// }
+if (!defined("WHMCS")) {
+    die("This file cannot be accessed directly");
+}
 function vpc_ChangePassword_MetaData()
 {
     return array(
@@ -23,7 +23,7 @@ $serverusername = "olson";
 $passwordserver = "123";
 $domain = "192.168.5.125";
 $user = "123";
-$pass = "1234567";
+$pass = "12345678910";
 
 function vpc_ChangePassword($serverusername, $passwordserver, $domain, $user, $pass)
 {

@@ -106,7 +106,7 @@ function verificar_ip()
     $remote_ip = getIp();
 
     // Lista de IPs permitidas (IPv4 e IPv6)
-    $allowed_ips = array("186.10.5.69", "192.168.5.70", "192.168.5.1", "192.168.5.156");
+    $allowed_ips = array("186.10.5.69", "192.168.5.70", "192.168.5.1",);
 
     // Mostrar si la IP remota está permitida
     if (in_array($remote_ip, $allowed_ips)) {

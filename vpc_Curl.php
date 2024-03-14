@@ -108,7 +108,7 @@ $params = array(
     'passwordserver' => "123",
     'domain' => "192.168.5.125",
     'user' => "123",
-    'pass' => "123456789"
+    'pass' => "123"
 );
 
 

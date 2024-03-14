@@ -29,9 +29,8 @@ function vpc_ChangePassword_MetaData()
 /*-------------------------------------------------------------- 
 ## CONFIGURACION DEL MODULO 
 ----------------------------------------------------------------*/
-
-
-function vpc_ChangePassword_config()
+//function vpc_ChangePassword_config()
+function vpc_ChangePassword_ConfigOptions()
 {
     return array(
         // the friendly display name for a payment gateway should be

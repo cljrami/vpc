@@ -1,10 +1,11 @@
+
 <?php
 
 
 
-if (!defined("WHMCS")) {
-    die("This file cannot be accessed directly");
-}
+// if (!defined("WHMCS")) {
+//     die("This file cannot be accessed directly");
+// }
 
 /*-------------------------------------------------------------- 
 ## FUNCION NETADATA 
@@ -26,6 +27,79 @@ function vpc_ChangePassword_MetaData()
 ----------------------------------------------------------------*/
 
 /*-------------------------------------------------------------- 
+## CONFIGURACION DEL MODULO 
+----------------------------------------------------------------*/
+
+
+function vpc_ChangePassword_config()
+{
+    return array(
+        // the friendly display name for a payment gateway should be
+        // defined here for backwards compatibility
+        'FriendlyName' => array(
+            'Type' => 'System',
+            'Value' => 'vpc_ChangePassword_Module', //Sample Third Party Payment Gateway Module
+        ),
+        // a text field type allows for single line text input
+        // 'gnLogin' => array(
+        //     'FriendlyName' => 'ID de sitio GetNET',
+        //     'Type' => 'text',
+        //     'Size' => '25',
+        //     'Default' => 'FaaKg5TYBg1rzbydJbfXWLuXxrorTsVr',
+        //     'Description' => 'ID entregado por GetNET, identifica el dominio habilitado para recibir pagos',
+        // ),
+        // a password field type allows for masked text input
+        // 'gnTrankey' => array(
+        //     'FriendlyName' => 'Clave de sitio GetNET',
+        //     'Type' => 'text',
+        //     'Size' => '25',
+        //     'Default' => 'oL2TSkdK0EkHcEvo',
+        //     'Description' => 'Clave de sitio entregada por GetNET, se utiliza para autentificar y generar las transacciones.',
+        // ),
+        // the yesno field type displays a single checkbox option
+        // 'testMode' => array(
+        //     'FriendlyName' => '¿Utilizar ambiente de integración?',
+        //     'Type' => 'yesno', //esto se maneja con 'true' o 'false' a nivel de codigo
+        //     'Description' => 'Cuando está habilitado, todas las transacciones son dirigidas al servidor de GetNET de integración',
+        // ),
+        // 'enableEchos' => array(
+        //     'FriendlyName' => '¿Activar visualizacion de datos?',
+        //     'Type' => 'yesno', //esto se maneja con 'true' o 'false' a nivel de codigo
+        //     'Description' => 'Cuando está habilitado, despliega en la factura preforma los datos de la transacción',
+        //     'Default' => false,
+        // ),
+        // the dropdown field type renders a select menu of options
+        /*'dropdownField' => array(
+            'FriendlyName' => 'Dropdown Field',
+            'Type' => 'dropdown',
+            'Options' => array(
+                'option1' => 'Display Value 1',
+                'option2' => 'Second Option',
+                'option3' => 'Another Option',
+            ),
+            'Description' => 'Choose one',
+        ),*/
+        // the radio field type displays a series of radio button options
+        /*'radioField' => array(
+            'FriendlyName' => 'Radio Field',
+            'Type' => 'radio',
+            'Options' => 'First Option,Second Option,Third Option',
+            'Description' => 'Choose your option!',
+        ),*/
+        // the textarea field type allows for multi-line text input
+        /*'textareaField' => array(
+            'FriendlyName' => 'Textarea Field',
+            'Type' => 'textarea',
+            'Rows' => '3',
+            'Cols' => '60',
+            'Description' => 'Freeform multi-line text input field',
+        ),*/
+    );
+}
+/*-------------------------------------------------------------- 
+## FIN CONFIGURACION DEL MODULO 
+----------------------------------------------------------------*/
+/*-------------------------------------------------------------- 
 ## FUNCION CURL ACTUALIZADA con $params
 ----------------------------------------------------------------*/
 // Parámetros para la función vpc_ChangePassword
@@ -34,13 +108,14 @@ $params = array(
     'passwordserver' => "123",
     'domain' => "192.168.5.125",
     'user' => "123",
-    'pass' => "123"
+    'pass' => "123456789"
 );
 
 
 function vpc_ChangePassword(array $params)
 {
     try {
+
         $postvars = array(
             'username' => $params['serverusername'],
             'passwd' => $params['passwordserver'],

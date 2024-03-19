@@ -100,34 +100,7 @@ function recibirDatosCURL()
         'pass' => $pass,
     );
 }
-function verificar_ip()
-{
-    // Obtener la IP remota del cliente utilizando la función getIp()
-    $remote_ip = getIp();
 
-    // Lista de IPs permitidas (IPv4 e IPv6)
-    $allowed_ips = array("186.10.5.69", "192.168.5.70", "192.168.5.1",);
-
-    // Mostrar si la IP remota está permitida
-    if (in_array($remote_ip, $allowed_ips)) {
-        echo "La IP: $remote_ip está permitida.\n";
-    } else {
-        echo "Acceso no autorizado para la IP: $remote_ip\n";
-    }
-}
-// // Obtener la IP remota del cliente utilizando la función getIp()
-// $remote_ip = getIp();
-
-// // Lista de IPs permitidas (IPv4 e IPv6)
-// $allowed_ips = array("186.10.5.69", "192.168.5.70", "192.168.5.1");
-
-// // Mostrar si la IP remota está permitida
-// if (in_array($remote_ip, $allowed_ips)) {
-//     echo "La IP: $remote_ip está permitida.\n";
-// } else {
-//     echo "Acceso no autorizado para la IP: $remote_ip\n";
-// }
-// //13032024
 // Recibir y verificar los datos enviados por cURL
 function procesarDatosCURL($datosCURL)
 {
@@ -152,24 +125,24 @@ function procesarDatosCURL($datosCURL)
             if (trim($resultado) === '0') {
                 // Contraseña cambiada con éxito
                 // echo "La contraseña del usuario $user en la dirección IP $domain ha sido cambiada con éxito. La nueva contraseña es $pass ";
-                echo "Cambio realizado con exito ";
+                echo json_encode(array('result' => 'success'));
             } elseif (trim($resultado) === '-1') {
                 // Usuario no encontrado en la máquina remota
-                echo "El usuario $user no existe en la máquina remota.";
+                echo json_encode(array('result' => 'El usuario no existe en la máquina remota'));
             } else {
                 // Error al ejecutar el script de PowerShell
-                echo "Error al ejecutar el script de PowerShell.";
+                echo json_encode(array('result' => 'Error al ejecutar el script de PowerShell'));
             }
         } elseif ($pingStatus === -1) {
             // IP o puerto no disponibles
-            echo "La dirección IP o el puerto no están disponibles.";
+            echo json_encode(array('result' => 'La dirección IP o el puerto no están disponibles'));
         } else {
             // Dirección IP encontrada
-            echo "La dirección IP $domain existe.";
+            echo json_encode(array('result' => 'La dirección IP existe'));
         }
     } else {
         // Si no se recibieron todos los parámetros esperados, devolver un mensaje de error
-        echo "No se recibieron todos los parámetros esperados.";
+        echo json_encode(array('result' => 'No se recibieron todos los parámetros esperados'));
     }
 }
 

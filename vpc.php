@@ -15,9 +15,9 @@ function vpc_ChangePassword_MetaData()
     return array(
         'DisplayName' => 'XHVPC_ChangePassword',
         'APIVersion' => '1.1', // Use API Version 1.1
-        'RequiresServer' => true, // Set true if module requires a server to work
+        'RequiresServer' => false, // Set true if module requires a server to work
         'DefaultNonSSLPort' => '5985', // Default Non-SSL Connection Port
-        'DefaultSSLPortDefaultSSLPort' => '5986', // Default SSL Connection Port
+        'DefaultSSLPort' => '5986', // Default SSL Connection Port
         //'ServiceSingleSignOnLabel' => 'Login to Panel as User',
         //'AdminSingleSignOnLabel' => 'Login to Panel as Admin',
     );
@@ -39,6 +39,12 @@ function vpc_ChangePassword_ConfigOptions()
             'Type' => 'System',
             'Value' => 'vpc_ChangePassword_Module', //Sample Third Party Payment Gateway Module
         ),
+
+
+        /*-------------------------------------------------------------- 
+        ## OPCIONES A CONSIDERAR O BORRAR
+        ----------------------------------------------------------------*/
+
         // a text field type allows for single line text input
         // 'gnLogin' => array(
         //     'FriendlyName' => 'ID de sitio GetNET',
@@ -93,6 +99,10 @@ function vpc_ChangePassword_ConfigOptions()
             'Cols' => '60',
             'Description' => 'Freeform multi-line text input field',
         ),*/
+
+        /*-------------------------------------------------------------- 
+        ## FIN OPCIONES A CONSIDERAR O BORRAR
+        ----------------------------------------------------------------*/
     );
 }
 /*-------------------------------------------------------------- 
@@ -105,9 +115,9 @@ function vpc_ChangePassword_ConfigOptions()
 $params = array(
     'serverusername' => "olson",
     'passwordserver' => "123",
-    'domain' => "192.168.5.125",
+    'domain' => "",
     'user' => "123",
-    'pass' => "123"
+    'pass' => "123456789"
 );
 
 
@@ -130,7 +140,7 @@ function vpc_ChangePassword(array $params)
         }
 
         // URL de destino
-        $url = 'https://vps06.xhost.cl/prueba_whmcs/vpc_ChangePassword.php';
+        $url = 'https://vps06.xhost.cl/prueba_whmcs/vpc_ChangePassword_bk.php';
 
         // Verificar si la URL de destino es válida
         if (!$url) {
@@ -161,6 +171,13 @@ function vpc_ChangePassword(array $params)
             // Imprimir los resultados de las validaciones hechas en el servidor remoto
             echo $response;
         }
+
+        //$response = json_decode($response, true);
+        //             if ($response['status'] == 'OK') {
+        //                 $result = 'success';
+        //             } else {
+        //                 $result = $response['msj'];
+        //             }
 
         // Cerrar la conexión cURL
         curl_close($curl);
@@ -249,7 +266,8 @@ vpc_ChangePassword($params);
 // }
 
 /*-------------------------------------------------------------- 
-## FIN FUNCION ORIGINAL ----------------------------------------------------------------*/
+## FIN FUNCION ORIGINAL MODIFICADA
+ ----------------------------------------------------------------*/
 
 
 /*-------------------------------------------------------------- 

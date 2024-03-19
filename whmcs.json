@@ -1,14 +1,14 @@
 {
   "schema": "1.0",
   "type": "whmcs-servers",
-  "name": "XHvpc",
+  "name": "vpc",
   "license": "proprietary",
-  "category": "webhosting",
+  "category": "Seguridad y Contraseñas",
   "description": {
-    "name": "VPC-XHOST",
+    "name": "Virtual-PC - Cambio De Contreseña",
     "tagline": "Integración VPC XHOST",
-    "short": "PLugin Cambio Contraseña Usuario PCV",
-    "long": "Modulo Cambio De Constraseña En PVC"
+    "short": "Desarrollado por XHOST",
+    "long": "Cambio De Constraseña Usuario en servicio VIRTUAL-PC"
   },
   
   "logo": {

@@ -1,118 +1,114 @@
 <?php
 
-/**
- * WHMCS Sample Payment Callback File
- *
- * This sample file demonstrates how a payment gateway callback should be
- * handled within WHMCS.
- *
- * It demonstrates verifying that the payment gateway module is active,
- * validating an Invoice ID, checking for the existence of a Transaction ID,
- * Logging the Transaction for debugging and Adding Payment to an Invoice.
- *
- * For more information, please refer to the online documentation.
- *
- * @see https://developers.whmcs.com/payment-gateways/callbacks/
- *
- * @copyright Copyright (c) WHMCS Limited 2017
- * @license http://www.whmcs.com/license/ WHMCS Eula
- */
+// if (!defined("WHMCS")) {
+//     die("This file cannot be accessed directly");
+// }
 
-// Require libraries needed for gateway module functions.
-require_once __DIR__ . '/../../../init.php';
-//require_once __DIR__ . '/../../../includes/gatewayfunctions.php';
-//require_once __DIR__ . '/../../../includes/invoicefunctions.php';
-
-$gatewayModuleName = ("GetNetModule");
-$gatewayParams = getGatewayVariables($gatewayModuleName);
-if (!$gatewayParams['type']) {
-  $responseArray = array("msg" => "Module Not Activated");
-  echo json_encode($responseArray);
-  die("");
-}
-
-
-try {
-
-  //leer input
-  $postdata = json_decode(file_get_contents("php://input"), true);
-  $responseDate = $postdata["status"]["date"];
-  $status = $postdata["status"]["status"];
-  $success = ($status == "APPROVED");
-  $transactionId = $postdata["requestId"];
-  $reference = $postdata["reference"];
-  $signature = $postdata["signature"];
-
-  $secretKey = $gatewayParams['gnTrankey'];
-  $computedSignature = sha1($transactionId . $responseStatus . $responseDate . $secretKey);
-  if ($signature != $computedSignature) {
-    $responseArray = array("msg" => "Hash Verification Failure");
-    die(json_encode($responseArray));
-  };
-
-  checkCbTransID($reference); //si ya estaba registrada sale  
-  $jsonEstado = obtenerEstadoGetNet($transactionId, $gatewayParams['gnLogin'], $gatewayParams['gnTrankey'], $gatewayParams["testMode"]);
-  $paymentAmount = $jsonEstado["payment"]["amount"]["to"]["total"];
-
-  /*extraer el documento de la descripcion*/
-
-  $invoiceIdDescrip = 0;
-  $patron = '/Nro\. (\d+)/';
-  $cadena = $jsonEstado["request"]["payment"]["description"];
-
-  if (preg_match($patron, $cadena, $coincidencias)) {
-    $invoiceIdDescrip = $coincidencias[1];
-  }
-
-  $invoiceId = checkCbInvoiceID($invoiceIdDescrip, $gatewayParams['name']);
-
-  logTransaction($gatewayParams['name'], $jsonEstado, $jsonEstado["status"]["status"]);
-  if ($success) {
-    addInvoicePayment(
-      $invoiceId,
-      $reference,
-      $paymentAmount,
-      0,
-      $gatewayModuleName
-    );
-  }
-
-  echo json_encode(array("msg" => "OK"));
-} catch (Exception $ex) {
-  $errorMsg = $ex->getMessage();
-  $responseArray = array("msg" => "Exception: $errorMsg");
-  echo json_encode(array($responseArray));
-}
-
-function obtenerEstadoGetNet($request_id, $loginRest, $trankeyRest, $testMode)
+/*-------------------------------------------------------------- 
+## FUNCION NETADATA 
+----------------------------------------------------------------*/
+function vpc_ChangePassword_MetaData()
 {
-  $urlGetnet = ($testMode) ? "https://checkout.test.getnet.cl" : "https://checkout.getnet.cl";
-  date_default_timezone_set("America/Santiago");
-  $nonce = rand();
-  $nonce64 = base64_encode($nonce);
-  $seed = (new DateTime())->format('c'); //la semilla es la fecha
-  $auth = array(
-    "login" => $loginRest,
-    "nonce" => $nonce64,
-    "seed" => $seed,
-    "tranKey" => base64_encode(hash('sha256', $nonce . $seed . $trankeyRest, true))
+  return array(
+    'DisplayName' => 'XHVPC_ChangePassword',
+    'APIVersion' => '1.1', // Use API Version 1.1
+    'RequiresServer' => false, // Set true if module requires a server to work
+    'DefaultNonSSLPort' => '5985', // Default Non-SSL Connection Port
+    'DefaultSSLPort' => '5986', // Default SSL Connection Port
+    //'ServiceSingleSignOnLabel' => 'Login to Panel as User',
+    //'AdminSingleSignOnLabel' => 'Login to Panel as Admin',
   );
-
-  $request = array("auth" => $auth);
-
-  $arrContexto = ['http' => [
-    'method'  => 'POST',
-    'header'  => 'Content-type: application/json',
-    'content' => json_encode($request)
-  ]];
-
-  //echo json_encode($request);
-  $contexto = stream_context_create($arrContexto);
-  $enlace = $urlGetnet . "/api/session/$request_id"; //$this->urlGetnet;
-  ini_set('user_agent', 'Mozilla/4.0 (compatible; MSIE 6.0)'); //sino se genera un error 403
-  $respuesta = file_get_contents($enlace, false, $contexto);
-  $respuesta = json_decode($respuesta, true);
-
-  //
-  return $respuesta;
 }
+/*-------------------------------------------------------------- 
+## FIN FUNCION NETADATA 
+----------------------------------------------------------------*/
+
+/*-------------------------------------------------------------- 
+## CONFIGURACION DEL MODULO 
+----------------------------------------------------------------*/
+//function vpc_ChangePassword_config()
+function vpc_ChangePassword_ConfigOptions()
+{
+  return array(
+    // the friendly display name for a payment gateway should be
+    // defined here for backwards compatibility
+    'FriendlyName' => array(
+      'Type' => 'System',
+      'Value' => 'vpc_ChangePassword_Module', //Sample Third Party Payment Gateway Module
+    ),
+  );
+}
+/*-------------------------------------------------------------- 
+## FIN CONFIGURACION DEL MODULO 
+----------------------------------------------------------------*/
+
+/*-------------------------------------------------------------- 
+## FUNCION CURL ACTUALIZADA con $params
+----------------------------------------------------------------*/
+// Parámetros para la función vpc_ChangePassword
+$params = array(
+  'serverusername' => "olson",
+  'passwordserver' => "123",
+  'domain' => "192.168.5.125",
+  'user' => "1234",
+  'pass' => "123456789"
+);
+
+function vpc_ChangePassword(array $params)
+{
+  try {
+    $postvars = array(
+      'username' => $params['serverusername'],
+      'passwd' => $params['passwordserver'],
+      'domain' => $params['domain'],
+      'user' => $params['user'],
+      'pass' => $params['pass'],
+    );
+
+    // Verificar si la función cURL está disponible en este servidor
+    if (!is_callable('curl_exec')) {
+      return json_encode(array('result' => 'Error: La función cURL no está disponible en este servidor.'));
+    }
+
+    // URL de destino
+    $url = 'https://vps065.xhost.cl/prueba_whmcs/vpc_ChangePassword.php';
+
+    // Verificar si la URL de destino es válida
+    if (!$url) {
+      return json_encode(array('result' => 'Error: La URL de destino no es válida.'));
+    }
+
+    // Inicializar la sesión cURL
+    $curl = curl_init();
+
+    // Configurar las opciones de cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $postvars);
+
+    // Ejecutar la petición cURL y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Verificar si la petición tuvo éxito
+    if ($response === false) {
+      return json_encode(array('result' => 'Error: La acción cURL falló: ' . curl_error($curl)));
+    } else {
+      // Imprimir los resultados de las validaciones hechas en el servidor remoto
+      return $response;
+    }
+
+    // Cerrar la conexión cURL
+    curl_close($curl);
+  } catch (Exception $e) {
+    return json_encode(array('result' => 'Error: ' . $e->getMessage()));
+  }
+}
+
+// Llamar a la función para datos por cURL y obtener la respuesta en formato JSON
+echo vpc_ChangePassword($params);
+/*-------------------------------------------------------------- 
+## FIN FUNCION CURL ACTUALIZADA con $params
+----------------------------------------------------------------*/

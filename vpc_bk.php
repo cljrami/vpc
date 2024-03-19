@@ -92,7 +92,6 @@ function vpc_ChangePassword(array $params)
                 curl_setopt($curl, CURLOPT_POST, true);
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $postvars);
 
-
                 // Ejecutar la petición cURL y obtener la respuesta
                 $responseText = curl_exec($curl);
 
